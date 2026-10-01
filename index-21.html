@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>SLS Wire Rope Assistant — V28 Visual Polish</title>
+<style>
+:root{--blue:#073b76;--blue2:#0c5fa8;--gold:#c99635;--bg:#f4f7fb;--ink:#172033;--muted:#697588;--line:#dbe4ee;--green:#147a4b;--red:#b42318;--shadow:0 10px 30px rgba(7,59,118,.07)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Arial,Tahoma,sans-serif;color:var(--ink)}
+header{background:#fff;border-bottom:1px solid var(--line);padding:12px}.wrap{max-width:920px;margin:auto}.brand{display:flex;align-items:center;gap:11px}
+.logoimg{width:58px;height:58px;object-fit:contain}.logotxt{width:58px;height:58px;border-radius:14px;background:linear-gradient(135deg,var(--blue),var(--blue2));display:grid;place-items:center;color:#fff;font-weight:950;font-size:20px}
+.brand h1{font-size:17px;margin:0;color:var(--blue)}.sub{font-size:11px;color:var(--muted);margin-top:3px}
+main{padding:12px 10px 60px}.tabs{display:flex;gap:7px;margin-bottom:10px}.tab{flex:1;padding:12px;border:1px solid var(--line);background:#fff;border-radius:10px;font-weight:900}.tab.active{background:var(--blue);color:#fff}
+.card{background:rgba(255,255,255,.98);border:1px solid rgba(219,228,238,.95);border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:var(--shadow)}.intro{background:#eef6ff;border-left:4px solid var(--blue2);border-radius:9px;padding:10px;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.field label{display:block;font-size:10px;font-weight:900;color:var(--muted);margin-bottom:4px}
+input,select,textarea{width:100%;padding:12px;border:1px solid #cbd7e4;border-radius:11px;background:#fff;font-size:15px;outline:none;transition:.18s ease}input:focus,select:focus,textarea:focus{border-color:var(--blue2);box-shadow:0 0 0 3px rgba(12,95,168,.10)}
+button{border:1px solid var(--line);border-radius:12px;padding:12px;font-weight:900;background:#fff;transition:.18s ease}.calculate{width:100%;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;font-size:18px;padding:16px;border:0;box-shadow:0 9px 24px rgba(7,59,118,.20)}.calculate:active,.tab:active{transform:translateY(1px)}
+.hidden{display:none!important}.resultHero{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;border-radius:13px;padding:15px}.price{font-size:32px;font-weight:950;margin:4px 0}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px}.kpi{border:1px solid var(--line);border-radius:10px;padding:9px;background:#fff}.kpi small{display:block;color:var(--muted);font-size:9px;margin-bottom:3px}.kpi b{font-size:14px}
+.line{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #edf1f5;padding:8px 2px;font-size:12px}.line b{text-align:right}
+.note{margin-top:9px;padding:10px;border-radius:9px;background:#fff7df;font-size:12px}.ok{background:#eaf8f0;color:var(--green)}.bad{background:#fff0ef;color:var(--red)}
+details{margin-top:10px}summary{cursor:pointer;font-weight:900;color:var(--blue)}.future{padding:18px;text-align:center;color:var(--muted)}
+.mainFlow{display:grid;grid-template-columns:1fr;gap:12px}.primaryPair{display:grid;grid-template-columns:1fr 1fr;gap:10px}.specGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;padding-top:12px;border-top:1px solid #edf1f5}.specGrid input,.specGrid select{padding:10px;font-size:13px}.specGrid .field label{font-size:9px}.microHint{font-size:10px;color:var(--muted);margin-top:5px;line-height:1.35}.flowCard{padding:14px}.heroCard{box-shadow:none;border-color:#e5ebf2}.heroPricing{display:inline-flex;align-items:center;gap:8px;margin-top:8px;padding:7px 13px;border-radius:999px;background:#eef6ff;color:var(--blue);font-size:22px;font-weight:950;letter-spacing:.5px}.headerActions{margin-left:auto;display:flex;align-items:center;gap:6px}.langBtn{font-size:12px;padding:9px 11px;color:var(--blue);background:#fff}.comingSoon{text-align:center;padding:46px 18px}.comingSoon .soonIcon{font-size:34px}.comingSoon h2{color:var(--blue);margin:10px 0 6px}.comingSoon p{color:var(--muted);margin:0}.sectionTitle{font-size:13px;font-weight:950;color:var(--blue);margin:0 0 10px}@media(max-width:650px){.kpis{grid-template-columns:1fr 1fr}}@media(max-width:390px){.primaryPair{grid-template-columns:1fr 1fr}.specGrid{grid-template-columns:1fr 1fr}.kpis{grid-template-columns:1fr 1fr}.brand h1{font-size:14px}.logoimg{width:48px;height:48px}}
+
+/* ===== V28 VISUAL POLISH — UI ONLY, ENGINE UNCHANGED ===== */
+:root{--bg:#f3f6f9;--surface:#ffffff;--line:#e2e8f0;--muted:#718096;--shadow:0 6px 20px rgba(7,59,118,.045)}
+body{background:linear-gradient(180deg,#f7f9fc 0,#f2f5f8 42%,#f4f7fa 100%);letter-spacing:.01em}
+header{padding:14px 12px;background:rgba(255,255,255,.97);box-shadow:0 1px 12px rgba(7,59,118,.045)}
+.logoimg{width:70px;height:70px}
+.brand{gap:14px}.brand h1{font-size:18px;letter-spacing:.02em}.sub{font-size:11px;margin-top:5px;letter-spacing:.04em;color:#7b8797}
+.headerActions button{min-height:42px}.langBtn{border-color:#dbe5ef}.headerActions #settingsBtn{border-color:#dbe5ef!important}
+main{padding-top:16px}.card{border-color:#e4eaf1;box-shadow:var(--shadow);border-radius:16px}.flowCard{padding:16px 15px 18px}
+.heroCard{background:linear-gradient(145deg,#fff 0%,#f8fbff 100%);border-color:#e3eaf2!important;padding:20px 14px!important}
+.heroPricing{font-size:19px;padding:7px 15px;background:#f0f6fc;border:1px solid #dceaf7;box-shadow:none}
+.tabs{gap:9px;margin-bottom:12px}.tab{border-color:#dde5ed;box-shadow:none}.tab.active{box-shadow:0 5px 14px rgba(7,59,118,.12)}
+.mainFlow{gap:13px}.field label{font-size:10px;letter-spacing:.055em;margin-bottom:5px;color:#6d7888}
+input,select,textarea{border-color:#d5dee8;background:#fff;box-shadow:0 1px 2px rgba(23,32,51,.025)}
+input:hover,select:hover,textarea:hover{border-color:#c3d0de}
+.microHint{font-size:10px;color:#7a8797;margin:5px 2px 0}.microHint b{color:#516173}
+.primaryPair{gap:10px}
+.specGrid{position:relative;margin-top:3px;padding:38px 10px 11px;border:1px solid #dde7f0;border-radius:14px;background:#f5f8fb;gap:8px}
+.specGrid:before{content:'TECHNICAL SPECIFICATION';position:absolute;left:12px;top:11px;font-size:9px;font-weight:900;letter-spacing:.12em;color:#718198}
+.specGrid .field{padding:8px;border:1px solid rgba(255,255,255,.78);border-radius:11px}
+.specGrid .field:nth-child(1){background:#edf5fb}.specGrid .field:nth-child(2){background:#f2f1fa}.specGrid .field:nth-child(3){background:#f7f4e9}.specGrid .field:nth-child(4){background:#eef7f2}
+.specGrid .field label{color:#667589}.specGrid select{background:rgba(255,255,255,.88);border-color:rgba(197,209,221,.82);box-shadow:none}
+.sectionTitle{font-size:12px;letter-spacing:.035em;color:#415a77}.card:has(#accessoryRows),.card:has(#serviceRows){box-shadow:none;background:#fbfcfe;border-color:#e5eaf0}
+.saveBtn{background:#fff;border-color:#dce4ec;color:#40566e}
+.calculate{background:linear-gradient(135deg,#073b76,#0a5596);border-radius:13px;box-shadow:0 8px 20px rgba(7,59,118,.17);letter-spacing:.025em}
+#result:empty{display:none}.resultHero{border-radius:14px;box-shadow:0 8px 22px rgba(7,59,118,.13)}.price{letter-spacing:-.02em}
+@media(max-width:390px){.logoimg{width:60px;height:60px}.brand{gap:9px}.brand h1{font-size:13px}.sub{font-size:9px}.specGrid{padding-left:8px;padding-right:8px}.heroPricing{font-size:17px}}
+
+/* V30 — Designer Edition: visual-only refinement */
+:root{--blue:#073b76;--blue2:#0b5b9b;--gold:#b98a32;--bg:#f2f5f8;--ink:#142033;--muted:#748092;--line:#dfe6ed;--green:#147a4b;--red:#b42318;--shadow:0 8px 24px rgba(18,40,68,.055)}
+body{background:linear-gradient(180deg,#f7f9fb 0,#f2f5f8 220px,#f2f5f8 100%);letter-spacing:-.005em}
+header{padding:14px 12px;background:rgba(255,255,255,.96);border-bottom:1px solid #e5eaf0;box-shadow:0 1px 0 rgba(15,35,60,.02)}
+.brand{gap:13px}.logoimg{width:72px;height:64px}.brand h1{font-size:16px;letter-spacing:.015em;font-weight:900}.sub{font-size:10px;letter-spacing:.055em;text-transform:uppercase;color:#7c8797;margin-top:5px}
+.headerActions button{height:40px;border-radius:10px;border-color:#e0e6ec;box-shadow:none}.langBtn{font-weight:800}
+main{padding:16px 11px 72px}.wrap{max-width:820px}
+.tabs{padding:4px;background:#e9eef3;border-radius:14px;gap:4px;margin-bottom:14px}.tab{border:0;background:transparent;border-radius:10px;padding:11px 10px;color:#667487;box-shadow:none}.tab.active{background:#fff;color:var(--blue);box-shadow:0 2px 8px rgba(20,42,70,.08)}
+.card{border:1px solid #e2e8ee;border-radius:16px;box-shadow:0 5px 18px rgba(23,43,67,.045);padding:16px;margin-bottom:13px}
+.heroCard{position:relative;overflow:hidden;background:#0a3768!important;border:0!important;border-radius:16px!important;padding:16px 18px!important;text-align:left!important;box-shadow:0 10px 28px rgba(7,59,118,.14)!important;color:#fff}
+.heroCard:after{content:'';position:absolute;width:150px;height:150px;border-radius:50%;right:-55px;top:-72px;border:28px solid rgba(255,255,255,.045)}
+.heroCard .intro{background:transparent!important;border:0!important;padding:0!important;color:rgba(255,255,255,.74)!important;font-size:11px!important;letter-spacing:.02em}
+.heroCard .heroPricing{margin-top:7px;padding:0;background:transparent;color:#fff;border:0;border-radius:0;font-size:21px;letter-spacing:-.02em}
+.heroCard [style*="font-size:13px"]{color:rgba(255,255,255,.82)!important}
+.mainFlow{gap:14px}.flowCard{padding:17px 16px}.sectionTitle{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#718096;margin-bottom:12px}
+.field label{font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:#778397;margin-bottom:6px}
+input,select,textarea{min-height:47px;padding:11px 12px;border:1px solid #d9e1e9;border-radius:10px;background:#fbfcfd;font-size:14px;color:#182438;box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+input:hover,select:hover,textarea:hover{border-color:#c8d3df;background:#fff}input:focus,select:focus,textarea:focus{background:#fff;border-color:#2a6fa8;box-shadow:0 0 0 3px rgba(12,95,168,.085)}
+.microHint{font-size:10px;color:#8490a0;margin-top:6px}.primaryPair{gap:10px}
+.specGrid{position:relative;margin-top:2px;padding:38px 10px 10px;border:1px solid #dde5ed;border-radius:13px;background:#f7f9fb;gap:8px;box-shadow:inset 3px 0 0 rgba(7,59,118,.78)}
+.specGrid:before{content:'TECHNICAL SPECIFICATION';left:14px;top:12px;font-size:9px;font-weight:900;letter-spacing:.14em;color:#637389}
+.specGrid .field,.specGrid .field:nth-child(1),.specGrid .field:nth-child(2),.specGrid .field:nth-child(3),.specGrid .field:nth-child(4){padding:0;background:transparent;border:0;border-radius:0}
+.specGrid select{background:#fff;border-color:#dce4eb;min-height:43px;padding:9px 10px;font-size:12px}.specGrid .field label{font-size:8px;margin-bottom:5px;color:#8490a0}
+button{border-radius:10px}.calculate{margin-top:2px;border-radius:12px;padding:15px;background:#073b76;box-shadow:0 8px 18px rgba(7,59,118,.18);font-size:16px;letter-spacing:.01em}.calculate:hover{background:#0a477f;transform:translateY(-1px)}
+.resultHero{position:relative;overflow:hidden;background:#073b76;border-radius:14px;padding:17px 16px}.price{font-size:35px;letter-spacing:-.035em}.kpis{gap:8px}.kpi{border-color:#e2e8ee;border-radius:11px;padding:10px;background:#fbfcfd}.kpi small{font-size:8px;letter-spacing:.08em}.kpi b{font-size:14px;color:#1b2b40}
+details{border-top:1px solid #edf1f4;padding-top:11px}summary{font-size:12px}.line{padding:9px 2px;color:#59677a}.line b{color:#1b2b40}.note{border-radius:10px}
+#addAccessoryBtn,#addServiceBtn{background:#f8fafc;color:#31516f;border-color:#dce5ed}.optionalRow{padding-top:2px}
+#settingsModal>div{border-radius:18px!important;box-shadow:0 24px 70px rgba(10,30,55,.18)!important}
+@media(max-width:650px){main{padding-top:12px}.logoimg{width:66px;height:58px}.brand h1{font-size:14px}.heroCard{padding:15px!important}.flowCard{padding:15px 13px}.primaryPair{gap:8px}.specGrid{gap:7px}.price{font-size:31px}}
+@media(max-width:390px){.logoimg{width:61px;height:54px}.brand{gap:8px}.brand h1{font-size:12px}.sub{font-size:8px;letter-spacing:.035em}.headerActions{gap:4px}.headerActions button{padding-left:8px!important;padding-right:8px!important}.heroCard .heroPricing{font-size:19px}.flowCard{padding:14px 11px}.specGrid{padding-left:9px;padding-right:9px}.primaryPair{gap:7px}}
+
+
+/* ===== V30 FINAL UI — visual-only refinement ===== */
+:root{--navy:#073763;--navy-2:#0b4f86;--surface:#ffffff;--surface-2:#f7f9fb;--soft-blue:#edf5fb;--soft-gold:#faf6ec;--text-strong:#122033;--text-soft:#718096}
+body{background:#f3f6f8;color:var(--text-strong)}
+header{padding:11px 12px;position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:rgba(255,255,255,.94)}
+.logoimg{width:76px;height:60px}.brand h1{font-size:15px;letter-spacing:.025em}.sub{font-size:9px;margin-top:3px;color:#8490a0}
+main{padding-top:12px}.tabs{margin-bottom:11px;border:1px solid #e1e7ed;background:#edf1f5}.tab{font-size:11px;letter-spacing:.025em}.tab.active{color:#073b76}
+/* slimmer brand statement: less competition with the working area */
+.heroCard{min-height:82px!important;padding:14px 17px!important;border-radius:14px!important;box-shadow:0 7px 20px rgba(7,55,99,.11)!important;background:linear-gradient(118deg,#073763 0%,#0a467d 100%)!important}
+.heroCard:after{width:130px;height:130px;right:-62px;top:-72px;border-width:24px}
+.heroCard .intro{font-size:9px!important;letter-spacing:.11em!important;text-transform:uppercase}.heroCard [dir="rtl"]{font-size:17px!important;margin-top:3px!important}.heroCard .heroPricing{font-size:18px;margin-top:4px}
+.card{border-color:#e3e9ef;border-radius:14px;box-shadow:0 4px 15px rgba(20,40,64,.038)}.flowCard{padding:16px}
+/* First decision row */
+.mainFlow>.primaryPair:first-child{padding:4px;border-radius:12px;background:#f4f7fa;border:1px solid #e4eaf0}
+.mainFlow>.primaryPair:first-child .field{padding:7px 8px}.mainFlow>.primaryPair:first-child label{color:#506176;font-weight:950}
+.mainFlow>.primaryPair:first-child input,.mainFlow>.primaryPair:first-child select{background:#fff;border-color:#d5dfe8;font-weight:800}
+/* calmer override field */
+#wirePriceOverride{background:#fafbfc;border-style:dashed;color:#34465a}#wirePriceOverride:focus{border-style:solid;background:#fff}
+#wirePriceHint{color:#8793a2}
+/* status chips: technical outputs are scan-friendly */
+#swlHint,#cuttingHint{display:inline-flex;align-items:center;min-height:25px;width:auto;max-width:100%;padding:5px 9px;margin-top:7px;border-radius:999px;font-size:9px!important;font-weight:850!important;line-height:1.25}
+#swlHint{background:#edf5fb;color:#0a568f!important;border:1px solid #d9eaf7}
+#cuttingHint{background:#f6f7f9;color:#596a7d;border:1px solid #e5e9ee}
+#diaHint{margin-top:5px;color:#919cab}
+/* termination group */
+.mainFlow>.primaryPair:nth-of-type(2){position:relative;padding:31px 9px 9px;border-radius:13px;border:1px solid #e1e7ed;background:#fafbfd}
+.mainFlow>.primaryPair:nth-of-type(2):before{content:'TERMINATIONS';position:absolute;left:12px;top:10px;font-size:8px;font-weight:950;letter-spacing:.14em;color:#748296}
+/* technical block — quiet, precise */
+.specGrid{padding:37px 11px 11px;border-radius:12px;background:#f5f8fa;border-color:#dfe6ec;box-shadow:none}
+.specGrid:after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:12px 0 0 12px;background:#0b5b9b}.specGrid:before{left:14px;color:#5d6d81}
+.specGrid select{min-height:42px;border-radius:9px;background:#fff}
+/* secondary cards visually recede */
+#accessoryRows:empty+button,#serviceRows:empty+button{margin-top:2px!important}.sectionTitle{color:#617084;font-size:10px}
+#addAccessoryBtn,#addServiceBtn{min-height:43px;border-style:dashed;background:#fbfcfd;font-size:10px;letter-spacing:.035em}
+/* primary action */
+#calcBtn{min-height:54px;font-size:16px;font-weight:950;letter-spacing:.025em;background:linear-gradient(120deg,#073763,#0b558f);box-shadow:0 10px 24px rgba(7,55,99,.19)}
+#calcBtn:before{content:'CALCULATE  •  ';font-size:9px;letter-spacing:.12em;opacity:.72}
+/* don't show an empty-looking result card before calculation */
+#result:not(:empty){border-color:#dce4eb}#result>.sub{display:none}
+.resultHero{background:linear-gradient(120deg,#073763,#0a4b82);padding:19px 17px;border-radius:12px;box-shadow:none}.resultHero small{font-size:9px;letter-spacing:.045em;opacity:.8}.price{font-size:38px;line-height:1.05;margin:7px 0 5px}
+.kpis{margin-top:9px}.kpi{background:#f8fafc;border-color:#e4e9ee}.kpi small{color:#7e8998}.kpi b{font-weight:900}
+/* settings remains functional but visually consistent */
+#settingsModal{backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+@media(max-width:650px){header{padding:9px 10px}.logoimg{width:67px;height:53px}.heroCard{min-height:76px!important;padding:13px 15px!important}.mainFlow{gap:13px}.price{font-size:34px}}
+@media(max-width:390px){.brand h1{font-size:11px}.sub{font-size:7.5px}.logoimg{width:58px;height:49px}.heroCard [dir="rtl"]{font-size:16px!important}.heroCard .heroPricing{font-size:17px}.mainFlow>.primaryPair:nth-of-type(2){padding-left:7px;padding-right:7px}.specGrid{padding-left:8px;padding-right:8px}}
+
+</style></head>
+<body><header><div class="wrap brand"><img class="logoimg" src="data:image/png;base64,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G2+sq6t78fkXjj322CFDhsyYMeOdd975wQ9+cM4558ycOfOGG2444rDDj5s8hTlPe0ZxBGDLls319fX5PHEYAEQURxEBShLlwwgc+C7vAACD4Na7Wb58xerV65VMFGjRrVu3Pv74448//viOHTuIGLBbtmzJZkPfTxx66OHr1290dYsAlBJ7n2L5ueXvX5Tts8WthdfW1rZmzZowDFtbW6dNmzZ58uTm5mZmvuKKK6qrqx9++GG3MFwYhk4dbdy4cfr06ddcc017e7uLODNzJpPZvHlzY2Oju2Zra+vGjRt37drlElMLd9y5c+eVV155//33u49vvvnmI488csEFF5xyyim1tbW33nqrtfaxxx6rqam58sorH3jggQsuuODcc8/t27fv8uXLHQHHzO6OX5nsG7gdfC5HwO1paGg4+eSTzzrrrA0bNqxdu/awww6bMmVKXV2d+6/DkZnfe++9Hj16fP/733fptS71YNu2bRdccMFf/vIXY8zmzZt/8IMfTJo06eabb85kMu+///6yZcvCMIyiyD2t+fPnt7W17dq1a/r06QceeOAjjzyyadOmr3/966NGjVqzZk1bW9v111/fq1evk0466cEHH3z88cf79++/aNEi/sqBdrIP4M5kMsUfC91YsmTJaaed5sZ4RUXFiy++qLWO4ziOY2cG5HK5F198MZVK3X777blczkXBmbmtrW3VqlUNDQ3MPGvWrNra2t///vfbt2/fvHnzscceO378+BkzZjzxxBMNDQ2PPPJIjx495syZY4y55ZZbysvLFyxYwMyPPfZYVVXVk08+6Z7i22+//bOf/eymm26aOHHiLbfc4nYyc2tr6953/3PJPvCdnFFYMKestb7vW2sdfbx+/frHH3+8vLx85MiRYRiWlJQUTpRSbtq0KZ1O9+zZ0wUQ3HXWrFlzww03XHHFFQcccMDDDz/c2tr6hz/8IZPJVFdXb9u2rb29fc6cOa720JGl69evP/LIIydOnHj33XfPnj17zJgx48ePHzx48Jo1a4gonU5XV1e///77vXv3/vGPf+xy1Z0PUVZWtpfrAn5u2fsnZowpjBenVZi5sLpnHMe7d+/euHGjO1Jr7fSAtbatre2qq66qrq5etGiR1rpwkWeffbZPnz6zZ892CU01NTV33nnn0qVLd+zY8ZOf/GTAgAErVqwwxmQymXQ6PXbs2PPOO6+tra25ufmcc8752te+tmXLlvb29qVLl27fvt3pepc87YJw7hZuf+HjVyb74MG6MJvT2s4PdkPG9VNK2aVLl6qqKu6IPBWMgVwut337dmaOoqi9vT2VSmUyGcdaxHFcXV2dSqX69+9fVVVVW1s7YsQIl2kUhqHnea+99lo2mz322GMPOeSQRYsW1dfX77ffft/85jc3bNiQSCRSqVRhnVxmJqLS0lJHPxTT91+eO/Npss/eo+Kmu84Uc5idEmzZbDaKIiK66KKLDj744D59+kyYMGH69Ok7d+5MJpPJZNK5ee6xOaT69+8vpXz66adfeOGFIUOGjB8/furUqS5Nw1p7wgknFHzCgooorNznPhbn+X1JtN9nyFeotorE+Wy1tbX33nvvrl271qxZ8+GHH9bV1a1bt865Kt27d3e+ayKRqK6udhOs53mHHXbYaaed9t57740dO/b888+vqKiYMmXK4YcfXunYgn8Egp9L9v6LXD63FMJ9LqEgjmPHvWUymZKSEmZuaWlpamrq06eP53npdHrDhg09e/bs2rUrOkKmLS0tDt8CneScb7eW6lfcnc8l/wC4kV/pJ1/E5iBDhzrK5XJuoT0UCgmLFo0vKCiHe2HdIABu/Yyv2kv8nPJVzxVOHE1R0LkAstlsNpttaWlxs259fT06vgOhra0tm826mgoicmVw7gEUrlZAXBev7vXPJ/8AuJ2N6Lbb2tpcrhYAIqqoqGhvbwdQWVnprDTRIQCEEGEYSilLS0vT6bQLkLv5toD4V2pEf375B8BdKKYDkEwmnfJNJpPOZigtLXXVokTkguIAgiAIw9BtuOKg8vLyAlnqzE23DrY77J9W/jG6G4DzMgoVsW5n8Xax4nZ7ion/T6jpKIpc5tc/ue7eoz0LPfmy4f+8lto/Zjh8OaL4b9IM/0HD/VPln6w5eyWKP7b6Dn852Swfk39qP+RLFtXa2lq8Bo+U0uxVwvj/X/6llUnx/O52Wf5yx9+/Mtzk7CqXPZJXLPTlTu7/0nD/owzBf03Jr1W3lxU+/5a/U/49ur9S+cdQVP+y8m+4v1L5N9xfqfwb7q9U/g33Vyr/hvsrlX/D/ZXK54DbWeguvFKw1t1GIYZSnIXuXCcXA3N7Cit6csfqHe6YYiereNutkeOu6W7hsmTdZd0xbj8zF9rgLl44oHgZ0U94c+7Iwoqk7pQvNR70+Wpz3PepF9aA1Vq7hdfcKmSufNwlhBS+Rd6FV4q/Xr3TagyHYyHnpnBiIfWwOAjp/vu3pdTum4JdsbM7slBkXjjFtRwdJcCu6j2dTqdSKXRQ0F9eRP//ASOttenACiakAAAAAElFTkSuQmCC" alt="SLS"><div><h1>SPECIALISED LIFTING SERVICES</h1><div class="sub">Wire Rope Assistant • Build • Price • Verify</div></div><div class="headerActions"><button id="languageBtn" class="langBtn" type="button">العربية</button><button id="settingsBtn" type="button" title="Data Settings" style="padding:9px 12px;font-size:18px;background:#fff">⚙️</button></div></div></header>
+<main class="wrap">
+<div class="card heroCard" style="text-align:center;padding:18px 14px">
+  <div style="font-size:13px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue2)">Focus on the client</div>
+  <div dir="rtl" style="font-size:20px;font-weight:900;margin-top:5px">وسيب عليا</div>
+  <div class="heroPricing">PRICING <span>⚡</span></div>
+</div>
+<div class="tabs"><button class="tab active" id="manualTabBtn">🛠️ BUILD YOUR SLING</button><button class="tab" id="descTabBtn">✨ DROP THE RFQ</button></div>
+<section id="manual">
+<div class="card flowCard"><div class="mainFlow">
+  <div class="primaryPair">
+    <div class="field"><label>QUANTITY</label><input id="qty" type="number" min="1" step="1" value="1"></div>
+    <div class="field"><label>SLING TYPE</label><select id="legs"><option value="1">Single Leg</option><option value="2">2 Leg</option><option value="3">3 Leg</option><option value="4">4 Leg</option></select></div>
+  </div>
+  <div class="field" style="display:none"><select id="swlSource"><option value="SLS" selected>SLS Approved Tables</option><option value="EN">EN Reference — 6×36 / Ferrule</option></select></div>
+  <div class="field"><label>DIAMETER</label><div style="display:grid;grid-template-columns:1fr 92px;gap:8px"><input id="diaInput" type="number" min="0" step="0.001" value="10"><select id="diaUnit"><option value="mm" selected>mm</option><option value="in">Inch</option></select></div>
+    <select id="dia" style="display:none"><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="8">8</option><option value="10" selected>10</option><option value="13">13</option><option value="16">16</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="22">22</option><option value="24">24</option><option value="26">26</option><option value="28">28</option><option value="32">32</option><option value="36">36</option><option value="38">38</option><option value="40">40</option><option value="44">44</option><option value="48">48</option><option value="52">52</option><option value="56">56</option><option value="64">64</option><option value="72">72</option><option value="76">76</option><option value="90">90</option></select>
+    <div id="diaHint" class="microHint"></div><div id="swlHint" class="microHint" style="font-weight:800;color:var(--blue2)"></div>
+  </div>
+  <div class="field"><label>CUSTOM WIRE PRICE / m</label><input id="wirePriceOverride" type="number" min="0" step="0.01" placeholder="Use system price"><div id="wirePriceHint" class="microHint"></div></div>
+  <div class="field"><label>FINISHED WIRE LENGTH / LEG</label><div style="display:grid;grid-template-columns:1fr 92px;gap:8px"><input id="len" type="number" min="0" step=".01" value="5"><select id="lenUnit"><option value="m" selected>Meter</option><option value="ft">Feet</option></select></div><div id="cuttingHint" class="microHint"></div></div>
+  <div class="primaryPair">
+    <div id="singleA" class="field"><label>TOP END</label><select id="endA"><option value="plain">Plain End</option><option value="soft">Soft Eye</option><option value="hard" selected>Hard Eye / Thimble Eye</option></select></div>
+    <div id="singleB" class="field"><label>BOTTOM END</label><select id="endB"><option value="plain">Plain End</option><option value="soft">Soft Eye</option><option value="hard" selected>Hard Eye / Thimble Eye</option></select></div>
+    <div id="multiTop" class="field hidden"><label>TOP END / EACH LEG</label><select id="topEnd"><option value="auto" selected>Auto — Fitted Thimble + Master Link</option><option value="hard">Hard Eye / Fitted Thimble</option><option value="soft">Soft Eye</option><option value="plain">Plain End</option></select></div>
+    <div id="multiBottom" class="field hidden"><label>BOTTOM END / EACH LEG</label><select id="bottom"><option value="soft" selected>Soft Eye</option><option value="hard">Hard Eye / Thimble Eye</option><option value="plain">Plain End</option></select></div>
+  </div>
+  <div id="singleLink" class="field hidden"><select id="singleLinkSel"><option value="none" selected>No Link</option></select></div>
+  <div class="specGrid">
+    <div class="field"><label>CORE</label><select id="core"><option value="IWRC" selected>IWRC — Steel</option><option value="FC">FC — Fiber</option><option value="WSC">WSC</option></select></div>
+    <div class="field"><label>CONSTRUCTION</label><select id="construction"><option value="6x19">6×19</option><option value="6x25">6×25 FW</option><option value="6x26">6×26 WS</option><option value="6x31">6×31 WS</option><option value="6x36" selected>6×36 WS</option><option value="6x37">6×37</option><option value="6x41">6×41 WS</option><option value="6x49">6×49 SWS</option><option value="8x19">8×19</option><option value="8x25">8×25 FW</option><option value="18x7">18×7</option><option value="19x7">19×7</option><option value="35x7">35×7</option><option value="other">Other</option></select></div>
+    <div class="field"><label>GRADE</label><select id="grade"><option value="1570">1570</option><option value="1770">1770</option><option value="1960" selected>1960</option><option value="2160">2160</option></select></div>
+    <div class="field"><label>ROTATION</label><select id="rotation"><option value="STD" selected>Standard</option><option value="NR">Non-Rotating</option></select></div>
+  </div>
+</div></div>
+<div class="card"><h2 class="sectionTitle">Optional Accessories & Fittings</h2><div id="accessoryRows"></div><button type="button" class="saveBtn" id="addAccessoryBtn" style="margin-top:8px;width:100%">+ ADD ACCESSORY / FITTING</button></div>
+<div class="card"><h2 class="sectionTitle">Optional Services</h2><div id="serviceRows"></div><button type="button" class="saveBtn" id="addServiceBtn" style="margin-top:8px;width:100%">+ ADD SERVICE</button></div>
+<div class="card"><button class="calculate" id="calcBtn">⚡ DO YOUR MAGIC</button></div>
+<div id="result" class="card" style="display:none"></div>
+</section>
+<section id="desc" class="hidden"><div class="card comingSoon"><div class="soonIcon">✨</div><h2>DROP THE RFQ</h2><p>Coming soon — RFQ smart reader is being prepared.</p><p dir="rtl" style="margin-top:6px">قريبًا… استنّانا.</p></div></section>
+</main>
+<div id="settingsModal" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:99;padding:18px;overflow:auto"><div style="max-width:980px;margin:auto;background:#f7f9fc;border-radius:16px;padding:14px"><div style="display:flex;align-items:center;gap:10px"><h2 style="margin:0;flex:1">⚙️ SLS Data Center</h2><button id="closeSettings" type="button">✕</button></div><div class="hint" style="margin:8px 0 12px">Edit the verified source data used by the calculation engine. Changes are saved on this device.</div><div id="settingsTabs" class="tabs"></div><div id="settingsBody" class="card"></div><div style="display:flex;gap:8px"><button id="saveSettings" class="calculate" type="button" style="flex:1">SAVE DATA</button><button id="resetSettings" type="button">RESET ORIGINAL</button></div></div></div>
+
+<script>
+let D={"wire":{"4":20,"5":25,"6":30,"8":40,"10":60,"13":80,"16":120,"18":170,"19":200,"20":230,"22":250,"24":270,"26":350,"28":430,"32":460,"36":600,"38":750,"40":880,"44":960,"48":1050,"52":1150,"56":1250,"64":1910,"72":2150,"76":null,"90":null},"cut":{"4":[0.14,0.23,0.185,0.07,0.115],"5":[0.16,0.27,0.215,0.08,0.135],"6":[0.21,0.35,0.28,0.105,0.175],"8":[0.54,0.45,0.495,0.27,0.225],"10":[0.36,0.58,0.47,0.18,0.29],"13":[0.43,0.72,0.575,0.215,0.36],"16":[0.55,0.9,0.725,0.275,0.45],"18":[0.65,1.01,0.83,0.325,0.505],"19":[0.66,1.06,0.86,0.33,0.53],"20":[0.7,1.14,0.92,0.35,0.57],"22":[0.74,1.2,0.973,0.373,0.6],"24":[0.86,1.33,1.097,0.432,0.665],"26":[0.9,1.43,1.165,0.45,0.715],"28":[0.98,1.57,1.275,0.49,0.785],"32":[1.1,1.8,1.45,0.55,0.9],"36":[1.28,2.01,1.645,0.64,1.005],"38":[1.36,2.32,1.84,0.68,1.16],"40":[1.41,2.4,1.905,0.705,1.2],"44":[1.56,2.8,2.18,0.78,1.4],"48":[1.71,3,2.355,0.855,1.5],"52":[1.84,3.4,2.62,0.92,1.7],"56":[2.12,3.46,2.79,1.06,1.73],"64":[2.3,3.75,3.025,1.15,1.875],"72":[2.6,3.8,3.2,1.3,1.9],"76":[2.64,4.68,3.66,1.32,2.34],"90":[3,5.4,4.2,1.5,2.7]},"soft":{"4":0.6,"5":0.75,"6":0.9,"8":0.12,"10":0.15,"13":0.195,"16":0.255,"18":0.27,"19":0.285,"20":0.3,"22":0.33,"24":0.36,"26":0.39,"28":0.42,"32":0.48,"36":0.54,"38":0.61,"40":0.61,"44":0.762,"48":0.762,"52":0.915,"56":0.915,"64":1,"72":1,"76":1.219,"90":1.5},"comp":{"6":[40,35,80],"8":[50,45,100],"9":[60,60,120],"10":[70,70,140],"11":[80,80,160],"12":[90,90,180],"13":[110,100,220],"14":[120,110,240],"16":[125,120,250],"18":[135,140,270],"20":[150,150,300],"22":[170,160,340],"24":[180,170,360],"26":[280,280,560],"28":[300,300,600],"30":[320,320,640],"32":[380,380,760],"34":[460,450,920],"36":[500,500,1000],"38":[800,840,1600],"40":[900,950,1800],"42":[1000,1100,2000],"44":[1400,1500,2800],"45":[1500,1700,3000],"48":[1600,1900,3200],"50":[2000,2200,4000],"52":[2300,2400,4600],"54":[2500,2550,5000],"56":[2800,2900,5600],"64":[9000,10000,18000],"72":[12000,12500,24000]},"master":[[5.8,480,1200],[8.0,1100,1400],[10.5,1260,1950],[11.8,1720,2500],[15.2,1980,3000],[17.0,2250,3500],[21.0,4150,5000],[25.0,4900,5500],[28.0,5300,6200],[30.0,6500,7100],[31.5,6850,7400],[35.0,9800,14500],[45.0,16500,23800]],"swl":{"IWRC_1960":{"8":[0.82,1.16,1.74],"9":[1.03,1.46,2.18],"10":[1.28,1.81,2.72],"11":[1.54,2.18,3.27],"12":[1.83,2.59,3.88],"13":[2.16,3.06,4.58],"14":[2.51,3.55,5.32],"16":[3.28,4.64,6.96],"18":[4.14,5.85,8.78],"19":[4.62,6.53,9.8],"20":[5.11,7.23,10.84],"22":[6.2,8.77,13.15],"24":[7.37,10.42,15.63],"26":[8.66,12.25,18.37],"28":[10.03,14.18,21.28],"32":[13.11,18.54,27.81],"36":[16.58,23.45,35.17],"38":[18.48,26.13,39.2],"40":[20.55,29.06,43.59],"44":[24.77,35.03,52.54],"48":[29.54,41.78,62.68],"52":[34.67,49.03,73.55],"56":[40.18,56.82,85.23],"60":[46.05,65.12,97.69]},"FC_1770":{"8":[0.68,0.96,1.44],"9":[0.86,1.22,1.82],"10":[1.07,1.51,2.27],"11":[1.29,1.82,2.74],"12":[1.54,2.18,3.27],"13":[1.81,2.56,3.84],"14":[2.09,2.96,4.43],"16":[2.75,3.89,5.83],"18":[3.49,4.93,7.39],"19":[3.86,5.46,8.19],"20":[4.29,6.07,9.1],"22":[5.19,7.34,11.01],"24":[6.16,8.71,13.07],"26":[7.24,10.24,15.36],"28":[8.4,11.88,17.82],"32":[10.97,15.51,23.27],"36":[13.69,19.33,29.44],"38":[15.47,21.88,32.82],"40":[17.15,24.25,36.38],"44":[20.72,29.32,43.97],"48":[24.77,35.03,52.54],"52":[28.86,41.0,61.5],"56":[33.57,47.47,71.21],"60":[38.55,54.49,81.73]}}};
+const EN_SWL={"FC_1770":{"8":[0.69,0.96,1.44],"9":[0.87,1.22,1.82],"10":[1.07,1.5,2.25],"11":[1.3,1.82,2.72],"12":[1.54,2.16,3.24],"13":[1.81,2.54,3.8],"14":[2.09,2.93,4.39],"16":[2.75,3.85,5.78],"18":[3.47,4.86,7.28],"20":[4.29,6.01,9.02],"22":[5.19,7.27,10.9],"24":[6.17,8.63,12.95],"26":[7.25,10.15,15.22],"28":[8.4,11.77,17.65],"32":[10.97,15.36,23.04],"36":[13.89,19.45,29.17],"40":[17.16,24.02,36.03],"44":[20.73,29.03,43.54],"48":[24.77,34.68,52.02],"52":[28.99,40.59,60.88],"56":[33.58,47.01,70.51],"60":[38.53,53.94,80.92]},"IWRC_1770":{"8":[0.74,1.04,1.55],"9":[0.94,1.31,1.97],"10":[1.16,1.62,2.43],"11":[1.4,1.96,2.94],"12":[1.66,2.33,3.49],"13":[1.94,2.72,4.08],"14":[2.28,3.19,4.78],"16":[2.95,4.14,6.2],"18":[3.74,5.24,7.86],"20":[4.62,6.47,9.71],"22":[5.6,7.83,11.75],"24":[6.66,9.32,13.99],"26":[7.82,10.94,16.41],"28":[9.06,12.69,19.03],"32":[11.83,16.57,24.85],"36":[14.99,20.99,31.48],"40":[18.53,25.94,38.92],"44":[22.39,31.34,47.01],"48":[26.61,37.25,55.87],"52":[31.19,43.67,65.5],"56":[36.33,50.86,76.29],"60":[41.65,58.31,87.47]},"FC_1960":{"8":[0.76,1.06,1.6],"9":[0.96,1.35,2.02],"10":[1.19,1.66,2.49],"11":[1.44,2.01,3.02],"12":[1.71,2.39,3.59],"13":[2.0,2.8,4.2],"14":[2.33,3.26,4.89],"16":[3.05,4.26,6.4],"18":[3.85,5.39,8.09],"20":[4.75,6.65,9.98],"22":[5.74,8.04,12.06],"24":[6.84,9.58,14.37],"26":[8.02,11.23,16.84],"28":[9.3,13.02,19.54],"32":[12.15,17.01,25.51],"36":[15.38,21.53,32.29],"40":[19.08,26.72,40.07],"44":[22.94,32.11,48.17],"48":[27.34,38.28,57.41],"52":[32.11,44.95,67.43],"56":[37.25,52.15,78.22],"60":[42.75,59.85,89.78]},"IWRC_1960":{"8":[0.82,1.15,1.72],"9":[1.04,1.45,2.18],"10":[1.28,1.79,2.69],"11":[1.55,2.17,3.25],"12":[1.83,2.57,3.85],"13":[2.17,3.03,4.55],"14":[2.51,3.52,5.28],"16":[3.28,4.6,6.9],"18":[4.15,5.81,8.71],"20":[5.12,7.17,10.75],"22":[6.2,8.68,13.02],"24":[7.38,10.33,15.49],"26":[8.66,12.12,18.19],"28":[10.04,14.05,21.08],"32":[13.12,18.37,27.55],"36":[16.59,23.22,34.83],"40":[20.55,28.77,43.16],"44":[24.77,34.68,52.02],"48":[29.54,41.36,62.04],"52":[34.68,48.55,72.83],"56":[40.18,56.26,84.39],"60":[46.06,64.48,96.72]},"IWRC_2160":{"8":[0.9,1.26,1.9],"9":[1.14,1.6,2.4],"10":[1.41,1.98,2.96],"11":[1.71,2.39,3.58],"12":[2.04,2.85,4.28],"13":[2.39,3.34,5.01],"14":[2.77,3.88,5.82],"16":[3.61,5.06,7.59],"18":[4.57,6.4,9.59],"20":[5.65,7.91,11.87],"22":[6.83,9.56,14.33],"24":[8.13,11.38,17.07],"26":[9.54,13.36,20.04],"28":[11.06,15.49,23.23],"32":[14.44,20.22,30.32],"36":[18.29,25.61,38.42],"40":[22.57,31.6,47.39],"44":[27.34,38.28,57.41],"48":[32.48,45.47,68.2],"52":[38.17,53.43,80.15],"56":[44.22,61.91,92.86],"60":[50.83,71.16,106.73]}};
+const SWL_META={
+  SLS:{label:"SLS Approved Tables",note:"Original SLS supplied SWL data — unchanged."},
+  EN:{label:"EN Reference — 6×36 / Ferrule",note:"Reference library: Class 6×36 MBF basis; ferrule efficiency KT=0.9; utilization coefficient Zp=5; 2-leg factor 1.4; 3–4-leg factor 2.1; angle band 0°–45°."}
+};
+const ORIGINAL_D=JSON.parse(JSON.stringify(D));
+try{const saved=localStorage.getItem('slsDataCenterV1');if(saved)D=JSON.parse(saved)}catch(e){}
+function el(id){return document.getElementById(id)}
+function money(n){return Number(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' EGP'}
+function showTab(t){el('manual').classList.toggle('hidden',t!=='manual');el('desc').classList.toggle('hidden',t!=='desc');el('manualTabBtn').classList.toggle('active',t==='manual');el('descTabBtn').classList.toggle('active',t==='desc')}
+function legUI(){let m=+el('legs').value>1;el('singleA').classList.toggle('hidden',m);el('singleB').classList.toggle('hidden',m);el('singleLink').classList.toggle('hidden',m);el('multiTop').classList.toggle('hidden',!m);el('multiBottom').classList.toggle('hidden',!m)}
+function availableGrades(){return ['1570','1770','1960','2160'];}
+function coreUI(){
+  const g=el('grade'),old=g.value||'1960';
+  const grades=availableGrades();
+  g.innerHTML=grades.map(x=>'<option value="'+x+'">'+x+' N/mm²</option>').join('');
+  g.value=grades.includes(old)?old:'1960';
+}
+function combo(a,b){if(a==='hard'&&b==='hard')return[0,'Hard × Hard'];if(a==='soft'&&b==='soft')return[1,'Soft × Soft'];if((a==='hard'&&b==='soft')||(a==='soft'&&b==='hard'))return[2,'Hard × Soft'];if((a==='hard'&&b==='plain')||(a==='plain'&&b==='hard'))return[3,'Hard × Plain'];if((a==='soft'&&b==='plain')||(a==='plain'&&b==='soft'))return[4,'Soft × Plain'];return[-1,'Plain × Plain']}
+function getSWL(d,core,grade,legs){
+  if(legs>=5)return null;
+  const src=el('swlSource')?el('swlSource').value:'SLS';
+  const key=core+'_'+grade;
+  const lib=src==='EN'?EN_SWL:D.swl;
+  const row=lib[key]?lib[key][String(d)]:null;
+  if(!row)return null;
+  return row[legs===1?0:legs===2?1:2];
+}
+function getMaster(swl,legs){if(swl==null||legs<2||legs>4)return null;let row=D.master.find(r=>Number(r[0])>Number(swl));if(!row)return null;return {load:row[0],type:legs===2?'FLAT':'Q.A',price:legs===2?row[1]:row[2]}}
+const ACCESSORY_OPTIONS=['Shackle — Screw Pin','Shackle — Bolt Type','Wide Body Shackle','Hook — Eye','Hook — Clevis','Safety Hook / Self-Locking Hook','Swivel / Swivel Hook','Master Link','Master Link Assembly / Quad Assembly','Connecting Link / Coupling Link','Wire Rope Thimble','Wire Rope Clip / Clamp','Fist Grip Clip','Open Swage Socket','Closed Swage Socket','Open Spelter Socket','Closed Spelter Socket','Wedge Socket','Swage Sleeve / Ferrule','Turnbuckle','Eye Bolt','Hoist Ring / Lifting Point','Load Binder','Sheave','Snatch Block / Pulley Block','Chain / Chain Component','Wire Rope Lubricant','Tag / Identification Plate','Other'];
+const SERVICE_OPTIONS=['Wire Rope Sling Fabrication / Assembly','Mechanical Splicing / Swaging','Flemish Eye Splicing','Hand Splicing','Socketing','Re-Socketing','Spelter Socket Termination','Wedge Socket Installation','Cutting to Length','Proof Load Test / Load Test','Pull Test / Tensile Test','Inspection of Lifting Gear','Third-Party Inspection','NDT — MPI','NDT — Dye Penetrant','NDT — Ultrasonic Testing','Visual Inspection','Certificate of Conformity (CoC)','Load Test Certificate','Material Traceability / Material Certificate','Inspection Certificate','Tagging / Identification','Wire Rope Lubrication','Wire Rope Spooling / Re-Spooling','Cleaning / Preparation','Repair / Rework','Delivery / Transportation','Other'];
+function esc(v){return String(v||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function addOptionalRow(kind,name='',qty=1,price=''){
+ const box=el(kind==='accessory'?'accessoryRows':'serviceRows'),opts=kind==='accessory'?ACCESSORY_OPTIONS:SERVICE_OPTIONS;
+ const row=document.createElement('div'); row.className='optionalRow'; row.style.cssText='display:grid;grid-template-columns:2fr .65fr 1fr auto;gap:7px;align-items:end;margin-top:10px';
+ row.innerHTML='<div class="field"><label>'+(kind==='accessory'?'ACCESSORY / FITTING':'SERVICE')+'</label><select class="optName">'+opts.map(x=>'<option'+(x===name?' selected':'')+'>'+esc(x)+'</option>').join('')+'</select><input class="customName hidden" placeholder="Write item / service name" style="margin-top:6px"></div><div class="field"><label>QTY</label><input class="optQty" type="number" min="0" step="1" value="'+qty+'"></div><div class="field"><label>UNIT PRICE (EGP)</label><input class="optPrice" type="number" min="0" step="0.01" value="'+price+'" placeholder="Your price"></div><button type="button" class="removeOpt" style="height:44px">×</button>';
+ box.appendChild(row); const sel=row.querySelector('.optName'),custom=row.querySelector('.customName');
+ function customUI(){custom.classList.toggle('hidden',sel.value!=='Other')} sel.addEventListener('change',customUI);customUI();row.querySelector('.removeOpt').onclick=()=>row.remove();
+}
+function optionalTotals(){let total=0,items=[];document.querySelectorAll('.optionalRow').forEach(r=>{let n=r.querySelector('.optName').value;if(n==='Other')n=r.querySelector('.customName').value.trim()||'Other';let q=Math.max(0,Number(r.querySelector('.optQty').value)||0),p=Math.max(0,Number(r.querySelector('.optPrice').value)||0),t=q*p;if(q>0&&(p>0||n)){total+=t;items.push({name:n,qty:q,price:p,total:t})}});return {total,items}}
+
+function resolveBaseWirePrice(d){
+  const exact=D.wire[String(d)];
+  if(exact!=null && !Number.isNaN(Number(exact))) return {price:Number(exact),source:'Source'};
+  const pts=Object.keys(D.wire).map(Number).filter(x=>D.wire[String(x)]!=null).sort((a,b)=>a-b);
+  if(pts.length<2)return {price:null,source:'Missing'};
+  let lo=pts.filter(x=>x<d).pop(), hi=pts.find(x=>x>d);
+  if(lo!=null && hi!=null){
+    const p1=Number(D.wire[String(lo)]),p2=Number(D.wire[String(hi)]);
+    return {price:p1+(p2-p1)*(d-lo)/(hi-lo),source:'Calculated'};
+  }
+  if(lo!=null){
+    const i=pts.indexOf(lo),lo2=pts[Math.max(0,i-1)];
+    if(lo2===lo)return {price:null,source:'Missing'};
+    const p1=Number(D.wire[String(lo2)]),p2=Number(D.wire[String(lo)]);
+    return {price:p2+(p2-p1)*(d-lo)/(lo-lo2),source:'Calculated'};
+  }
+  if(hi!=null){
+    const i=pts.indexOf(hi),hi2=pts[Math.min(pts.length-1,i+1)];
+    if(hi2===hi)return {price:null,source:'Missing'};
+    const p1=Number(D.wire[String(hi)]),p2=Number(D.wire[String(hi2)]);
+    return {price:p1+(p2-p1)*(d-hi)/(hi2-hi),source:'Calculated'};
+  }
+  return {price:null,source:'Missing'};
+}
+function systemWirePrice(d,core){
+  const base=resolveBaseWirePrice(d);
+  if(base.price==null)return {...base,basePrice:null};
+  const basePrice=Number(base.price);
+  const nr=el('rotation')&&el('rotation').value==='NR';
+  return {price:nr?basePrice*0.90:basePrice,basePrice,source:base.source,rotationRule:nr?'Non-Rotating −10%':'Standard'};
+}
+function getCurrentEnds(){
+  const legs=+el('legs').value;
+  if(legs===1) return [el('endA').value,el('endB').value];
+  let top=el('topEnd').value;
+  if(top==='auto') top='hard';
+  return [top,el('bottom').value];
+}
+function updateCuttingHint(){
+  const hint=el('cuttingHint'); if(!hint)return;
+  const legs=+el('legs').value,d=+el('dia').value;
+  const raw=Number(el('len').value||0), unit=el('lenUnit').value;
+  const L=unit==='ft'?raw*0.3048:raw;
+  const ends=getCurrentEnds(), C=combo(ends[0],ends[1]), cuts=D.cut[String(d)];
+  if(!cuts){hint.textContent='Cutting: source required for Ø'+d+' mm';return;}
+  const allowance=C[0]<0?0:Number(cuts[C[0]]||0);
+  const physical=L+allowance;
+  const charged=Math.ceil(physical-1e-10);
+  const total=charged*legs;
+  hint.textContent='Cutting: '+physical.toFixed(2)+' m / leg → Charge: '+charged+' m / leg'+(legs>1?' • Total: '+total+' m':'');
+}
+function updateSWLHint(){
+  const hint=el('swlHint'); if(!hint)return;
+  const core=el('core').value,grade=el('grade').value,d=+el('dia').value,legs=+el('legs').value;
+  const construction=el('construction').value;
+  // Existing SLS/EN SWL engine is authoritative. WSC and constructions outside the
+  // verified table are never guessed.
+  if(core==='WSC'){hint.textContent='SWL: Source required for WSC';return;}
+  if(construction!=='6x36' && el('swlSource').value==='EN'){hint.textContent='SWL: Source required for this construction';return;}
+  const sw=getSWL(d,core,grade,legs);
+  hint.textContent=sw!=null?'SWL: '+Number(sw).toFixed(2)+' t • '+(legs===1?'Single Leg':legs===2?'2 Leg':'3–4 Leg'):'SWL: Needs confirmation for this exact specification';
+}
+function updateLiveHints(){
+  updateCuttingHint();
+  updateSWLHint();
+}
+function syncDiameter(){
+  const inp=el('diaInput'),unit=el('diaUnit'),hidden=el('dia'),hint=el('diaHint');
+  if(!inp||!unit||!hidden)return;
+  const raw=Number(inp.value||0);
+  const mm=unit.value==='in'?raw*25.4:raw;
+  const available=[...hidden.options].map(o=>Number(o.value)).filter(Number.isFinite);
+  let used=available.reduce((best,x)=>Math.abs(x-mm)<Math.abs(best-mm)?x:best,available[0]);
+  hidden.value=String(used);
+  if(hint){
+    if(unit.value==='in') hint.textContent=raw+' in = '+mm.toFixed(2)+' mm • table diameter used: '+used+' mm';
+    else hint.textContent='Table diameter used: '+used+' mm';
+  }
+  updateWirePriceHint();
+  updateLiveHints();
+}
+function updateWirePriceHint(){
+  const d=+el('dia').value,core=el('core').value,p=systemWirePrice(d,core),hint=el('wirePriceHint');
+  if(!hint)return;
+  hint.textContent=p.price==null?'System price unavailable — enter custom price':('System: '+p.price.toLocaleString('en-US',{maximumFractionDigits:2})+' EGP/m • '+p.rotationRule+(p.source==='Calculated'?' • derived from nearest stored price points':' • SLS stored price'));
+}
+
+function calculate(){
+ const q=Math.max(1,+el('qty').value||1),legs=+el('legs').value,d=+el('dia').value,construction=(el('construction')?el('construction').value:''),inputLength=+el('len').value||0,lenUnit=(el('lenUnit')?el('lenUnit').value:'m'),L=lenUnit==='ft'?inputLength*0.3048:inputLength,core=el('core').value,grade=el('grade').value,swlSource=el('swlSource').value;
+ let a,b,assembly='';
+ if(legs===1){a=el('endA').value;b=el('endB').value;assembly=el('singleLinkSel').value==='link'?'Single Link requested':'No top link'}
+ else {let te=el('topEnd').value;a=te==='auto'?'hard':te;b=el('bottom').value;assembly=(legs===2?'2-Leg Master Link (FLAT)':'Master Link Assembly (Q.A)')+(te==='auto'?' — AUTO':' — TOP OVERRIDE: '+a)}
+ const C=combo(a,b),cuts=D.cut[String(d)],priceInfo=systemWirePrice(d,core),priceOverride=(el('wirePriceOverride')?el('wirePriceOverride').value.trim():''),ppm=priceOverride!==''?Number(priceOverride):priceInfo.price,priceMode=priceOverride!==''?'Custom':priceInfo.source,comp=D.comp[String(d)];
+ let missing=[];
+ if(!cuts)missing.push('cutting table for Ø'+d);
+ if(ppm==null || Number.isNaN(Number(ppm)))missing.push('wire price / metre for Ø'+d);
+ const formed=(a!=='plain'?1:0)+(b!=='plain'?1:0),hard=(a==='hard'?1:0)+(b==='hard'?1:0);
+ if((formed||hard)&&!comp)missing.push('ferrule/thimble price for Ø'+d);
+ let swl=getSWL(d,core,grade,legs);
+ let referenceWarnings=[]; if(swl==null)referenceWarnings.push('SWL needs confirmation for '+core+' / Grade '+grade+' / Ø'+d+' / '+legs+' leg');
+ let allowance=(cuts&&C[0]>=0)?Number(cuts[C[0]]):0;
+ let physical=L+allowance;
+ let charged=Math.ceil(physical-1e-10);
+ let wireLeg=ppm==null?0:charged*Number(ppm);
+ // Component counting is explicit for multi-leg slings:
+ // every leg connected to a Master Link / Q.A has one HARD top eye = 1 Ferrule + 1 Thimble.
+ // the bottom termination is then added independently for EACH leg.
+ let topFerrulesPerLeg=legs>1?(a==='plain'?0:1):0, topThimblesPerLeg=legs>1?(a==='hard'?1:0):0;
+ let bottomFerrulesPerLeg=legs>1?(b==='plain'?0:1):0;
+ let bottomThimblesPerLeg=legs>1?(b==='hard'?1:0):0;
+ let ferrulesPerLeg=legs>1?(topFerrulesPerLeg+bottomFerrulesPerLeg):formed;
+ let thimblesPerLeg=legs>1?(topThimblesPerLeg+bottomThimblesPerLeg):hard;
+ let totalFerrules=ferrulesPerLeg*legs;
+ let totalThimbles=thimblesPerLeg*legs;
+ let ferruleLeg=comp?ferrulesPerLeg*Number(comp[0]||0):0;
+ let thimbleLeg=comp?thimblesPerLeg*Number(comp[1]||0):0;
+ let legCost=wireLeg+ferruleLeg+thimbleLeg;
+ let legsCost=legCost*legs;
+ let master=null, masterCost=0, masterText='Not required';
+ if(legs===1 && el('singleLinkSel').value==='link'){
+   missing.push('Single Leg Link price / source'); masterText='SOURCE REQUIRED';
+ } else if(legs>1){
+   master=getMaster(swl,legs);
+   if(master){masterCost=Number(master.price);masterText=master.type+' • '+master.load.toFixed(1)+' T • '+money(master.price)}
+   else {missing.push('Master Link '+(legs===2?'FLAT':'Q.A')+' above '+(swl==null?'required SWL':swl.toFixed(2)+' T'));masterText='SOURCE REQUIRED'}
+ }
+ let optional=optionalTotals();
+ let baseOne=legsCost+masterCost;
+ let one=baseOne+optional.total;
+ let total=one*q;
+ let swlText=swl==null?'SOURCE REQUIRED':swl.toFixed(2)+' t';
+ let title=legs===1?C[1]+' • '+assembly:legs+' Leg • '+assembly+' • Bottom '+b;
+ let h='<div class="resultHero"><small>'+title+'</small><div class="price">'+(missing.length?'DATA REQUIRED':money(total))+'</div><small>PRICE FOR ONE COMPLETE SLING • QTY '+q+'</small></div>'+ 
+ '<div class="kpis"><div class="kpi"><small>UNIT COST</small><b>'+(missing.length?'—':money(one))+'</b></div><div class="kpi"><small>QUANTITY</small><b>'+q+'</b></div><div class="kpi"><small>ORDER TOTAL</small><b>'+(missing.length?'—':money(total))+'</b></div><div class="kpi"><small>SWL</small><b>'+swlText+'</b></div></div>';
+ h+='<details open><summary>Calculation Details</summary>'+ 
+ '<div class="line"><span>Rope specification</span><b>'+construction+' • '+core+' • '+grade+'</b></div>'+ 
+ '<div class="line"><span>Diameter</span><b>Ø'+d+' mm</b></div>'+ 
+ 
+ '<div class="line"><span>SWL</span><b>'+swlText+'</b></div>'+ 
+ '<div class="line"><span>Finished length / leg</span><b>'+L.toFixed(3)+' m</b></div>'+ 
+ '<div class="line"><span>Termination used for cutting</span><b>'+C[1]+'</b></div>'+ 
+ 
+ '<div class="line"><span>Physical cut / leg</span><b>'+physical.toFixed(3)+' m</b></div>'+ 
+ '<div class="line"><span>Charged wire / leg — rounded UP</span><b>'+charged+' m</b></div>'+ 
+ '<div class="line"><span>Total charged wire / sling</span><b>'+(charged*legs)+' m</b></div>'+ 
+ '<div class="line"><span>Wire price / metre</span><b>'+(ppm==null?'SOURCE REQUIRED':money(ppm)+' • '+priceMode+(core==='FC'&&priceMode!=='Custom'?' • FC −8%':''))+'</b></div>'+ 
+ 
+ 
+ '<div class="line"><span>Total Ferrules / sling</span><b>'+totalFerrules+'</b></div>'+ 
+ '<div class="line"><span>Total Thimbles / sling</span><b>'+totalThimbles+'</b></div>'+ 
+ '<div class="line"><span>Cost / leg</span><b>'+money(legCost)+'</b></div>'+ 
+ '<div class="line"><span>All legs cost</span><b>'+money(legsCost)+'</b></div>'+ 
+ '<div class="line"><span>Upper Link / Assembly</span><b>'+masterText+'</b></div>'+ 
+ 
+ '<div class="line"><span>Optional Accessories / Services</span><b>'+money(optional.total)+'</b></div>'+
+ (optional.items.length?optional.items.map(x=>'<div class="line"><span>'+esc(x.name)+' × '+x.qty+'</span><b>'+money(x.total)+'</b></div>').join(''):'')+
+ '</details>';
+ h+='<div class="note '+(missing.length?'bad':'ok')+'">'+(missing.length?'SOURCE REQUIRED: '+missing.join(' • '):'Calculation complete.')+(referenceWarnings.length?' • '+referenceWarnings.join(' • '):'')+'</div>';
+ el('result').innerHTML=h; el('result').style.display='block';
+}
+
+const SETTINGS_SECTIONS=[
+ ['wire','Wire Prices / metre'],['cut','Cutting Allowances'],['comp','Ferrule / Thimble / Holding'],['swl','SWL Tables'],['master','Master Link / Quad Prices']
+];
+let activeSetting='wire';
+function renderSettingsTabs(){let t=el('settingsTabs');t.innerHTML=SETTINGS_SECTIONS.map(x=>'<button type="button" class="tab '+(x[0]===activeSetting?'active':'')+'" data-set="'+x[0]+'">'+x[1]+'</button>').join('');t.querySelectorAll('[data-set]').forEach(b=>b.onclick=()=>{activeSetting=b.dataset.set;renderSettingsTabs();renderSettingsBody()})}
+function inp(path,val){return '<input class="dataEdit" data-path="'+path+'" type="number" step="0.001" value="'+(val==null?'':val)+'">'}
+function renderSettingsBody(){let b=el('settingsBody'),k=activeSetting,h='';
+ if(k==='wire'){h='<h3>Wire Price / metre (EGP)</h3><div class="note ok"><b>SLS stored wire prices.</b> Standard uses the stored price. Non-Rotating applies the agreed −10% rule. Missing diameter prices are derived from nearest stored points and clearly treated as calculated.</div><div class="grid">'+Object.keys(D.wire).map(d=>'<div class="field"><label>Ø '+d+' mm</label>'+inp('wire.'+d,D.wire[d])+'</div>').join('')+'</div>'}
+ if(k==='cut'){h='<h3>Cutting allowance (m)</h3><div style="overflow:auto"><table style="width:100%;border-collapse:collapse"><tr><th>Ø</th><th>Hard×Hard</th><th>Soft×Soft</th><th>Hard×Soft</th><th>Hard×Plain</th><th>Soft×Plain</th></tr>'+Object.keys(D.cut).map(d=>'<tr><td>'+d+'</td>'+D.cut[d].map((v,i)=>'<td>'+inp('cut.'+d+'.'+i,v)+'</td>').join('')+'</tr>').join('')+'</table></div>'}
+ if(k==='comp'){h='<h3>Components price (EGP)</h3><div style="overflow:auto"><table style="width:100%"><tr><th>Ø</th><th>Ferrule</th><th>Thimble</th><th>Holding</th></tr>'+Object.keys(D.comp).map(d=>'<tr><td>'+d+'</td>'+D.comp[d].map((v,i)=>'<td>'+inp('comp.'+d+'.'+i,v)+'</td>').join('')+'</tr>').join('')+'</table></div>'}
+ if(k==='master'){h='<h3>Master Link / Quad Assembly</h3><div style="overflow:auto"><table style="width:100%"><tr><th>Load T</th><th>FLAT price</th><th>Q.A. price</th></tr>'+D.master.map((r,ri)=>'<tr>'+r.map((v,i)=>'<td>'+inp('master.'+ri+'.'+i,v)+'</td>').join('')+'</tr>').join('')+'</table></div>'}
+ if(k==='swl'){h='<h3>SWL Library</h3><div class="note ok"><b>SLS Approved Tables</b> — original editable data supplied by SLS.</div>'+Object.keys(D.swl).map(key=>'<h4>'+key+'</h4><div style="overflow:auto"><table style="width:100%"><tr><th>Ø</th><th>Single</th><th>2 Leg</th><th>3–4 Leg</th></tr>'+Object.keys(D.swl[key]).map(d=>'<tr><td>'+d+'</td>'+D.swl[key][d].map((v,i)=>'<td>'+inp('swl.'+key+'.'+d+'.'+i,v)+'</td>').join('')+'</tr>').join('')+'</table></div>').join('')}
+ if(k==='swl'){h+='<div class="note" style="margin-top:16px"><b>EN Reference Library — read only</b><br>'+SWL_META.EN.note+'</div>'+Object.keys(EN_SWL).map(key=>'<h4>'+key+'</h4><div style="overflow:auto"><table style="width:100%"><tr><th>Ø</th><th>Single</th><th>2 Leg 0–45°</th><th>3–4 Leg 0–45°</th></tr>'+Object.keys(EN_SWL[key]).map(d=>'<tr><td>'+d+'</td>'+EN_SWL[key][d].map(v=>'<td>'+v.toFixed(2)+'</td>').join('')+'</tr>').join('')+'</table></div>').join('')}
+ b.innerHTML=h;
+}
+function setPath(obj,path,val){let a=path.split('.'),x=obj;for(let i=0;i<a.length-1;i++)x=x[a[i]];x[a[a.length-1]]=val}
+function saveSettings(){document.querySelectorAll('.dataEdit').forEach(i=>{if(i.value!=='')setPath(D,i.dataset.path,Number(i.value))});localStorage.setItem('slsDataCenterV1',JSON.stringify(D));alert('Data saved successfully')}
+function openSettings(){el('settingsModal').classList.remove('hidden');renderSettingsTabs();renderSettingsBody()}
+
+
+function parseRFQ(){
+ const t=(el('rfqText').value||'').toLowerCase(); if(!t.trim()){el('parseNote').textContent='Paste the RFQ first.';return;}
+ let m=t.match(/(\d+(?:\.\d+)?)\s*mm/); if(m)el('diaInput').value=Number(m[1]);
+ let lm=t.match(/(?:x|×)\s*(\d+(?:\.\d+)?)\s*(?:m|mtr|meter|metre)s?\b/)||t.match(/(\d+(?:\.\d+)?)\s*(?:m|mtr|meter|metre)s?\s*(?:long|length)?/); if(lm)el('len').value=Number(lm[1]);
+ if(/(?:4|four)[ -]?leg/.test(t))el('legs').value='4'; else if(/(?:3|three)[ -]?leg/.test(t))el('legs').value='3'; else if(/(?:2|two)[ -]?leg/.test(t))el('legs').value='2'; else if(/single[ -]?leg|1[ -]?leg/.test(t))el('legs').value='1';
+ if(/\biwrc\b|steel core/.test(t))el('core').value='IWRC'; else if(/fiber core|fibre core|\bfc\b/.test(t))el('core').value='FC';
+ let g=t.match(/\b(1570|1770|1960|2160)\b/); if(g)el('grade').value=g[1];
+ let c=t.match(/\b(6\s*[x×]\s*(?:19|25|26|31|36|37|41|49)|8\s*[x×]\s*(?:19|25)|18\s*[x×]\s*7|19\s*[x×]\s*7|35\s*[x×]\s*7)\b/); if(c){let v=c[1].replace(/\s/g,'').replace('×','x'); if([...el('construction').options].some(o=>o.value===v))el('construction').value=v;}
+ if(/non[- ]?rotating|rotation[- ]?resistant|35\s*[x×]\s*7|19\s*[x×]\s*7|18\s*[x×]\s*7/.test(t))el('rotation').value='NR';
+ if(/soft eye.*both|both.*soft eye/.test(t)){el('endA').value='soft';el('endB').value='soft'} else if(/hard eye.*both|thimble.*both|both.*hard eye/.test(t)){el('endA').value='hard';el('endB').value='hard'}
+ syncDiameter();legUI();coreUI();updateWirePriceHint();updateLiveHints();showTab('manual');el('parseNote').textContent='RFQ parsed. Review highlighted fields, then calculate.';
+}
+
+
+function toggleLanguage(){
+ const b=el('languageBtn'); const ar=b.dataset.lang!=='ar'; b.dataset.lang=ar?'ar':'en'; b.textContent=ar?'English':'العربية';
+ document.documentElement.lang=ar?'ar':'en';
+ const map=ar?{'BUILD YOUR SLING':'ابنِ الـ Sling','DROP THE RFQ':'DROP THE RFQ'}:{};
+ el('manualTabBtn').innerHTML=ar?'🛠️ ابنِ الـ Sling':'🛠️ BUILD YOUR SLING';
+ el('descTabBtn').innerHTML='✨ DROP THE RFQ';
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  el('calcBtn').addEventListener('click',function(e){e.preventDefault();calculate()});
+  el('legs').addEventListener('change',function(){legUI();updateLiveHints()});
+  el('core').addEventListener('change',function(){coreUI();updateWirePriceHint()}); el('swlSource').addEventListener('change',coreUI);
+el('diaInput').addEventListener('input',syncDiameter); el('diaUnit').addEventListener('change',syncDiameter);
+['len','lenUnit','legs','qty','endA','endB','topEnd','bottom','grade','construction','rotation'].forEach(function(id){
+  const x=el(id); if(x)x.addEventListener('change',updateLiveHints);
+});
+el('len').addEventListener('input',updateLiveHints);
+el('core').addEventListener('change',updateLiveHints); el('rotation').addEventListener('change',function(){updateWirePriceHint();updateLiveHints()});
+  el('manualTabBtn').addEventListener('click',function(){showTab('manual')});
+  el('descTabBtn').addEventListener('click',function(){showTab('desc')});
+  el('addAccessoryBtn').addEventListener('click',()=>addOptionalRow('accessory'));
+  el('addServiceBtn').addEventListener('click',()=>addOptionalRow('service'));
+  el('settingsBtn').onclick=openSettings; el('languageBtn').onclick=toggleLanguage; el('closeSettings').onclick=()=>el('settingsModal').classList.add('hidden'); el('saveSettings').onclick=saveSettings; el('resetSettings').onclick=()=>{if(confirm('Reset all edited data to the original supplied data?')){D=JSON.parse(JSON.stringify(ORIGINAL_D));localStorage.removeItem('slsDataCenterV1');renderSettingsBody();alert('Original data restored')}};
+  legUI(); coreUI(); syncDiameter(); updateLiveHints();
+});
+
+</script></body></html>
